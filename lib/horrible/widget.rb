@@ -8,12 +8,9 @@ module Horrible
       base.extend(ClassMethods)
     end
 
-    def initialize
-      @responses = {}
-    end
-
     def action(&block)
       id = block.object_id.to_s
+      @responses ||= {}
       @responses[id] = block
       "/call/#{id}"
     end
@@ -35,7 +32,7 @@ module Horrible
       if env["PATH_INFO"] == '/'
         start
       elsif response_id = env["PATH_INFO"][%r(/call/([0-9]+)), 1]
-        if @responses[response_id] 
+        if @responses and @responses[response_id] 
           @responses[response_id].call
           respond_with { to_html }
         else

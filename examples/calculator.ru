@@ -8,7 +8,6 @@ class Calculator
   attr_accessor :current, :total
 
   def initialize
-    super
     self.total = 0
     self.current = 0
   end
