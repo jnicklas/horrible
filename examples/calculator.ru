@@ -37,9 +37,10 @@ class Calculator
         html.p do
           html.a(current, :class => "current")
         end
-        (0..9).each do |num|
-          html.p do
+        html.p do
+          (0..9).each do |num|
             html.a(num.to_s, :href => action { press(num) })
+            html << " "
           end
         end
         html.p do
