@@ -41,7 +41,7 @@ module Horrible
           @responses[response_id].call
           respond_with { to_html }
         else
-          Fiber.yield([404, {}, "There is no such action"])
+          start
         end
       else
         Fiber.yield([404, {}, "Page not found"])
@@ -60,6 +60,9 @@ module Horrible
 
     module ClassMethods    
       def continuations
+        # Thread safety: fiber has to be resumed from the same thread.
+        # Is there any workaround, otherwise that would make Horrible
+        # fundamentally no threadsafe.
         @continuations ||= Continuations.new(lambda {
           widget = self.new
           loop do
@@ -69,9 +72,17 @@ module Horrible
         })
       end
 
+      def mutex
+        @mutex ||= Mutex.new
+      end
+
       def call(env)
-        @env = env
-        continuations.call(env)
+        # FIXME: this is a nasty hack, and most likely not threadsafe.
+        # Not sure how to fix this :(
+        mutex.synchronize do
+          @env = env
+          continuations.call(env)
+        end
       end
     end
 
