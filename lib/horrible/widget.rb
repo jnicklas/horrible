@@ -1,6 +1,8 @@
 module Horrible
   module Widget
 
+    attr_reader :env
+
     def self.included(base)
       super
       base.extend(ClassMethods)
@@ -14,6 +16,14 @@ module Horrible
       id = block.object_id.to_s
       @responses[id] = block
       id
+    end
+
+    def request
+      Rack::Request.new(@env)
+    end
+
+    def params
+      request.params
     end
 
     def html(&block)
@@ -53,6 +63,7 @@ module Horrible
         @continuations ||= Continuations.new(lambda {
           widget = self.new
           loop do
+            Horrible.logger.info "[HORRIBLE] Executing action."
             widget.resume(@env)
           end
         })
