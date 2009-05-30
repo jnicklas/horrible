@@ -12,10 +12,10 @@ module Horrible
       @responses = {}
     end
 
-    def define_response(block)
+    def action(&block)
       id = block.object_id.to_s
       @responses[id] = block
-      id
+      "/call/#{id}"
     end
 
     def request
@@ -26,10 +26,8 @@ module Horrible
       request.params
     end
 
-    def html(&block)
-      html = Horrible::HTML.new(self)
-      yield html
-      html.to_s
+    def html
+      yield(Builder::XmlMarkup.new).to_s
     end
 
     def resume(env)
@@ -50,6 +48,10 @@ module Horrible
 
     def start
       respond_with { to_html }
+    end
+
+    def to_html
+      ""
     end
 
     def respond_with
