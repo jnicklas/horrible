@@ -1,6 +1,7 @@
 # A simple calculator
 # I know it doesn't actually work like a calculator, but you get the idea...
-require ::File.join(::File.dirname(__FILE__), '..', 'lib', 'horrible')
+require 'rubygems'
+require 'horrible'
 
 class Calculator
   include Horrible::Widget

@@ -5,6 +5,8 @@ require 'rubygems'
 require 'builder'
 
 module Horrible
+  VERSION = "0.0.1"
+  
   def self.logger
     @logger ||= Logger.new(STDOUT)
   end

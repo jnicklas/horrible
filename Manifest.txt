@@ -1,0 +1,15 @@
+History.txt
+Manifest.txt
+README.rdoc
+Rakefile
+examples/calculator.ru
+examples/increment.ru
+examples/reverse.ru
+lib/horrible.rb
+lib/horrible/continuations.rb
+lib/horrible/widget.rb
+script/console
+script/destroy
+script/generate
+test/test_helper.rb
+test/test_horrible.rb

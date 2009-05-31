@@ -1,5 +1,6 @@
 # Hardcore string reversing! OMFG!
-require ::File.join(::File.dirname(__FILE__), '..', 'lib', 'horrible')
+require 'rubygems'
+require 'horrible'
 
 class Calculator
   include Horrible::Widget
