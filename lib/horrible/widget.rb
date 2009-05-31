@@ -30,31 +30,26 @@ module Horrible
     def resume(env)
       @env = env
       if env["PATH_INFO"] == '/'
-        start
+        return respond_with { to_html }
       elsif response_id = env["PATH_INFO"][%r(/call/([0-9]+)), 1]
         if @responses and @responses[response_id] 
           @responses[response_id].call
-          respond_with { to_html }
+          return respond_with { to_html }
         else
-          start
+          return respond_with { to_html }
         end
       else
-        Fiber.yield([404, {}, "Page not found"])
+        return respond_with(404) { "Page not found" }
       end
-    end
-
-    def start
-      respond_with { to_html }
     end
 
     def to_html
       ""
     end
 
-    def respond_with
+    def respond_with(status=200, headers={})
       @responses = {}
-      raise ArgumentError, "no block" unless block_given?
-      Fiber.yield([200, {}, yield])
+      [status, headers, yield]
     end
 
     module ClassMethods    
@@ -66,7 +61,7 @@ module Horrible
           widget = self.new
           loop do
             Horrible.logger.info "[HORRIBLE] Executing action."
-            widget.resume(@env)
+            Fiber.yield(widget.resume(@env))
           end
         })
       end
