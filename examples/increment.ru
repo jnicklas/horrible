@@ -9,7 +9,7 @@ class Calculator
   end
 
   def to_html
-    html do |html|
+    builder do |html|
       html.p(@value)
       html.p do
         html.a '++', :href => action { @value += 1 }

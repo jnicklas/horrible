@@ -23,7 +23,7 @@ module Horrible
       request.params
     end
 
-    def html
+    def builder
       yield(Builder::XmlMarkup.new).to_s
     end
 

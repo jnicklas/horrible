@@ -31,7 +31,7 @@ class Calculator
   end
 
   def to_html
-    html do |html|
+    builder do |html|
       html.div(:class => "calculator") do
         html.p do
           html.a(current, :class => "current")

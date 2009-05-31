@@ -11,7 +11,7 @@ class Calculator
   end
 
   def to_html
-    html do |html|
+    builder do |html|
       html.form(:method => 'POST', :action => action { reverse }) do
         html.input(:type => 'text', :name => 'string', :value => string)
         html.input(:type => 'submit', :value => 'Reverse!')
